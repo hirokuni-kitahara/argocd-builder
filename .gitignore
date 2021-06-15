@@ -5,6 +5,10 @@
 *.so
 *.dylib
 
+argocd-builder
+argocd-builder-core
+build/
+
 # Test binary, built with `go test -c`
 *.test
 

@@ -1,0 +1,25 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: IntegrityShieldCheck
+metadata:
+  name: kustomize-guestbook-constraint
+spec:
+  match:
+    kinds:
+      - apiGroups: ["", "apps"]
+        kinds: ["Service", "Deployment"] # match condition to call validation webhook
+    namespaces:
+    - "secure-ns"
+  parameters:
+    ignoreAttrs:
+    - match:
+      - kind: Deployment
+      attrs:
+      - spec.replicas
+    # targetSA: system:serviceaccount:argocd:xxxxx
+    manifestRef:
+      image: gcr.io/sigstore-test-project/kustomize-guestbook-maniest:dev
+    signerConfig:
+      signers:
+      - signatureType: sigstore
+        subjects:
+        - email: "hirokuni.kitahara@gmail.com"
