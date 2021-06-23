@@ -1,0 +1,27 @@
+apiVersion: apis.integrityshield.io/v1alpha1
+kind: ResourceSigningProfile
+metadata:
+  name: kustomize-guestbook-rsp
+spec:
+  match:
+    protectRules:
+    - match:
+      - kind: Service
+      - kind: Deployment
+    targetNamespaceSelector:
+      include:
+      - "secure-ns"
+  parameters:
+    ignoreAttrs:
+    - match:
+      - kind: Deployment
+      attrs:
+      - spec.replicas
+    # targetSA: system:serviceaccount:argocd:xxxxx
+    manifestRef:
+      image: gcr.io/xxxxxx
+    signerConfig:
+      signers:
+      - signatureType: sigstore
+        subjects:
+        - email: "xxxxxx@gmail.com"
